@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"> 
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>WOUI智能物料设计平台</title>
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+    var oHeader = document.getElementById('header-2');
+    var oDiv=document.getElementById('div1');
+	var aIpt=oDiv.getElementsByTagName('input');
+	var aDiv=oDiv.getElementsByTagName('div');
+	$(window).on('scroll', function() {
+	        scroll()
+	    });
+ 		var aA1 = oHeader.getElementsByTagName('a');
+ 		var aLi = oHeader.getElementsByTagName('li');
+ 		
+ 		for (var i = 0; i<aLi.length; i++) {
+            
+            aLi[i].index=i;
+		    aLi[i].onclick=function () {
+				for (var i = 0; i<aLi.length; i++) {
+	            aLi[i].className='';
+				}
+			    this.className='active';		  
+	};
+
+ 	};
+ 	
+
+	for (var i = 0; i<aIpt.length; i++) {
+		aIpt[i].index=i;
+		aIpt[i].onclick=function () {
+
+			for (var i = 0; i<aIpt.length; i++) {
+            aIpt[i].className='';
+            aDiv[i].style.display='none';
+			}
+		    this.className='active';
+		    aDiv[this.index].style.display='block';
+	};
+	};
+	
+}
+
+</script>
+</head>
+
+<body>
+<div id="header-2">
+	<div class="nav-left">
+		<ul>
+			<img src="img/logo2.png">
+			<li class="active"><a href="index.html">首页</a></li>
+			<li><a href="javascript:;">线上物料模板</a></li>
+			<li><a href="javascript:;">线下平面模板</a></li>
+			<li><a href="javascript:;">动画物料</a></li>
+			<li><a href="javascript:;">管理</a></li>
+		</ul>
+	</div>
+	<div class="nav-right">
+		<ul>
+			<li>你好，<span>倩倩</span></li>
+			<li>|<a class="exit" href="javascript:;">退出
+              <i class="c-icon"></i>
+			</a></li>
+		</ul>
+	</div>
+</div>
+<div id="container-2">
+	<div class="mianbaoxie">
+     <i class="c-icon2"></i><span onClick="window.open('list.html')">返回物料模版库</span>
+	</div>
+	<div class="imgwindow">
+		<img src="img/ii.png" ></div>
+		<div class="imginfo">
+			<div>银联支付立减红色</div>
+			<p>900x383px</p>
+			<div class="doublebtn">
+				<input class="doublebtn-1" type="button" value="立即制作" onClick="window.open('design.html')">
+				<input class="doublebtn-2" type="button" value="下载物料">
+			</div>
+		</div>
+	</div>
+	<div class="detail-img">
+		<img src="img/info.png">
+	</div>
+</div>
+<div id="footer-2">
+	<div id="copyright"></div>
+	<div id="fri-link"><img src=""></div>
+</div>
+</body>
+
+</html>

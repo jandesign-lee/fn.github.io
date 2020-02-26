@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"> 
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>WOUI智能物料设计平台</title>
+<style>
+      #container{
+        width: 900px;
+        height: 383px;
+        background: #fff;
+        margin: 0 auto;
+        margin-top: 40px;
+      }
+      #save{
+        background: #7327EE;
+        width: 126px;
+        height: 40px;
+        border-radius: 2px;
+        font-size: 16px;
+        outline:none;
+        border: 0px;
+        color: #fff;
+        cursor: pointer;
+        margin: 0 auto;
+        display: block;
+        margin-top: 40px;
+}
+       #save:hover{
+  background: #2B5EF9;
+}
+</style>
+<script src="konva.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+    var oHeader = document.getElementById('header-3');
+    var oDiv=document.getElementById('div1');
+	var aDiv=oDiv.getElementsByTagName('div');
+	$(window).on('scroll', function() {
+	        scroll()
+	    });
+ 		var aA1 = oHeader.getElementsByTagName('a');
+ 		var aLi = oHeader.getElementsByTagName('li'); 		
+ 		for (var i = 0; i<aLi.length; i++) {            
+            aLi[i].index=i;
+		    aLi[i].onclick=function () {
+				for (var i = 0; i<aLi.length; i++) {
+	            aLi[i].className='';
+				}
+			    this.className='active';		  
+	    };
+ 	};
+
+}
+</script>
+</head>
+<body style="overflow:hidden">
+<div id="header-3">
+	<div class="nav-left">
+		<ul>
+			<li><a href="index.html">首页</a></li>
+			<li><a href="javascript:;">线上物料模板</a></li>
+			<li><a href="javascript:;">线下平面模板</a></li>
+			<li><a href="javascript:;">动画物料</a></li>
+			<li><a href="javascript:;">管理</a></li>
+		</ul>
+	</div>
+	<div class="nav-right">
+		<ul>
+			<li>你好，<span>倩倩</span></li>
+			<li>|<a class="exit" href="javascript:;">退出
+              <i class="c-icon"></i>
+			</a></li>
+		</ul>
+	</div>
+</div>
+<div id="container" onmousewheel="return zoomImg(this)">	</div>
+<div id="buttons"><button id="save">下载物料</button></div>
+<div id="footer-2">
+	<div id="copyright"></div>
+	<div id="fri-link"><img src=""></div>
+</div>
+
+<script src="drawtext.js"></script>
+<script>    
+ //   js代码       
+ function zoomImg(obj){          
+  // 一开始默认是100%         
+   let zoom = parseInt(obj.style.zoom, 10) || 100;       
+     // 滚轮滚一下wheelDelta的值增加或减少120         
+   zoom += event.wheelDelta/12;      
+      if(zoom>0)    {          
+   obj.style.zoom = zoom + '%';  
+    }    
+      return false;      
+  }
+</script>
+<script>
+      
+      //创建一个舞台
+      var stage = new Konva.Stage({
+        container: 'container', //获取div元素的ID
+        width: 900,
+        height: 383,
+     
+      });
+
+       var GUIDELINE_OFFSET = 3;
+      
+      //创建一个层
+      var layer = new Konva.Layer();
+      var group1 = new Konva.Group();
+      layer.add(group1);
+
+
+
+
+      // main API:
+      var imageObj = new Image();
+      imageObj.onload = function() {
+        var yoda = new Konva.Image({
+          x: 0,
+          y: 0,
+          image: imageObj,
+          width: 900,
+          height: 383,
+          crossOrigin:"anonymous",
+        });
+        
+        
+        // add the shape to the layer
+        group1.add(yoda);
+        layer.batchDraw();
+        yoda.zIndex(0);
+
+
+      };
+      
+      imageObj.src = 'img/iii.png'; 
+
+
+
+     
+
+      
+      //创建一个文本
+      var textNode = new Konva.Text({
+        text: '双击编辑主标题',
+        x: 230,
+        y: 120,
+        fontSize: 60,
+        fill: '#fff',
+        align:'center',
+        verticalAlign:'middle',
+        draggable: true,
+        name: 'object'
+
+      });
+
+      var textNode2 = new Konva.Text({
+        text: '双击编辑副标题',
+        x: 300,
+        y: 210,
+        fontSize: 38,
+        fill: '#C92A2A',
+        align:'center',
+        verticalAlign:'middle',
+        draggable: true,
+        name: 'object'
+
+      });
+
+      group1.add(textNode);
+      layer.add(textNode2);
+      //矩形
+      var rect1 = new Konva.Rect({
+        x: 158,
+        y: 196,
+        width: 568,
+        height: 67,
+        fillLinearGradientStartPoint: { x: -50, y: 0 },
+        fillLinearGradientEndPoint: { x: 50, y: 0 },
+        fillLinearGradientColorStops: [0, '#FFE984', 1, '#FFBC60'],
+        draggable: true,
+        name: 'object'
+      });
+
+      group1.add(rect1);
+
+
+
+      stage.add(layer); //把层添加到舞台
+
+      var tr = new Konva.Transformer({
+        node: textNode,
+
+        keepRatio: true,
+        // set minimum width of text
+        boundBoxFunc: function(oldBox, newBox) {
+          newBox.width = Math.max(30, newBox.width);
+          return newBox;
+        }
+      });
+        
+        var tr2 = new Konva.Transformer({
+        node: textNode2,
+
+        keepRatio: true,
+        // set minimum width of text
+        boundBoxFunc: function(oldBox, newBox) {
+          newBox.width = Math.max(30, newBox.width);
+          return newBox;
+        }
+      });
+
+   
+      layer.add(tr);
+      layer.add(tr2);
+
+      textNode.on('mousedown', function() {
+        tr.show();
+      });
+      layer.draw();
+      textNode2.on('mousedown', function() {
+        tr2.show();
+      });
+      layer.draw();
+
+       stage.on('click', function() {
+        tr.hide();
+        tr2.hide();
+        tr3.hide();
+      });
+      layer.draw();
+
+      var tr3 = new Konva.Transformer({
+        node: rect1,
+        centeredScaling: false
+      });
+      layer.add(tr3);
+      
+
+      rect1.on('mousedown', function() {
+        tr3.show();
+      });
+      layer.draw();
+      rect1.on('mouseout', function() {
+        tr3.hide();
+      });
+      
+
+
+      //画出所有
+      layer.draw();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      textNode.on('dblclick', () => {
+        // hide text node and transformer:
+        textNode.hide();
+        tr.show();
+        layer.draw();
+
+        // create textarea over canvas with absolute position
+        // first we need to find position for textarea
+        // how to find it?
+
+        // at first lets find position of text node relative to the stage:
+        var textPosition = textNode.absolutePosition();
+
+        // then lets find position of stage container on the page:
+        var stageBox = stage.container().getBoundingClientRect();
+
+        // so position of textarea will be the sum of positions above:
+        var areaPosition = {
+          x: stageBox.left + textPosition.x,
+          y: stageBox.top + textPosition.y
+        };
+
+
+
+        // create textarea and style it
+        var textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+
+        // apply many styles to match text on canvas as close as possible
+        // remember that text rendering on canvas and on the textarea can be different
+        // and sometimes it is hard to make it 100% the same. But we will try...
+        textarea.value = textNode.text();
+        textarea.style.position = 'absolute';
+        textarea.style.top = areaPosition.y + 'px';
+        textarea.style.left = areaPosition.x + 'px';
+        textarea.style.width = textNode.width() - textNode.padding() * 2 + 'px';
+        textarea.style.height =
+          textNode.height() - textNode.padding() * 2 + 5 + 'px';
+        textarea.style.fontSize = textNode.fontSize() + 'px';
+        textarea.style.border = 'none';
+        textarea.style.padding = '0px';
+        textarea.style.margin = '0px';
+        textarea.style.overflow = 'hidden';
+        textarea.style.background = 'none';
+        textarea.style.outline = 'none';
+        textarea.style.resize = 'none';
+        textarea.style.lineHeight = textNode.lineHeight();
+        textarea.style.fontFamily = textNode.fontFamily();
+        textarea.style.transformOrigin = 'left top';
+        textarea.style.textAlign = textNode.align();
+        textarea.style.color = textNode.fill();
+        rotation = textNode.rotation();
+        var transform = '';
+        if (rotation) {
+          transform += 'rotateZ(' + rotation + 'deg)';
+        }
+
+        var px = 0;
+        // also we need to slightly move textarea on firefox
+        // because it jumps a bit
+        var isFirefox =
+          navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+        if (isFirefox) {
+          px += 2 + Math.round(textNode.fontSize() / 20);
+        }
+        transform += 'translateY(-' + px + 'px)';
+
+        textarea.style.transform = transform;
+
+        // reset height
+        textarea.style.height = 'auto';
+        // after browsers resized it we can set actual value
+        textarea.style.height = textarea.scrollHeight + 3 + 'px';
+
+        textarea.focus();
+
+        function removeTextarea() {
+          textarea.parentNode.removeChild(textarea);
+          window.removeEventListener('click', handleOutsideClick);
+          textNode.show();
+          tr.hide();
+          tr.forceUpdate();
+          layer.draw();
+        }
+
+        function setTextareaWidth(newWidth) {
+          if (!newWidth) {
+            // set width for placeholder
+            newWidth = textNode.placeholder.length * textNode.fontSize();
+          }
+          // some extra fixes on different browsers
+          var isSafari = /^((?!chrome|android).)*safari/i.test(
+            navigator.userAgent
+          );
+          var isFirefox =
+            navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+          if (isSafari || isFirefox) {
+            newWidth = Math.ceil(newWidth);
+          }
+
+          var isEdge =
+            document.documentMode || /Edge/.test(navigator.userAgent);
+          if (isEdge) {
+            newWidth += 1;
+          }
+          textarea.style.width = newWidth + 'px';
+        }
+
+        textarea.addEventListener('keydown', function(e) {
+          // hide on enter
+          // but don't hide on shift + enter
+          if (e.keyCode === 13 && !e.shiftKey) {
+            textNode.text(textarea.value);
+            removeTextarea();
+          }
+          // on esc do not set value back to node
+          if (e.keyCode === 27) {
+            removeTextarea();
+          }
+        });
+
+        textarea.addEventListener('keydown', function(e) {
+          scale = textNode.getAbsoluteScale().x;
+          setTextareaWidth(textNode.width() * scale);
+          textarea.style.height = 'auto';
+          textarea.style.height =
+            textarea.scrollHeight + textNode.fontSize() + 'px';
+        });
+
+        function handleOutsideClick(e) {
+          if (e.target !== textarea) {
+            textNode.text(textarea.value);
+            removeTextarea();
+          }
+        }
+        setTimeout(() => {
+          window.addEventListener('click', handleOutsideClick);
+        });
+      });
+
+      
+
+
+
+      textNode2.on('dblclick', () => {
+        // hide text node and transformer:
+        textNode2.hide();
+        tr2.show();
+        layer.draw();
+
+        // create textarea over canvas with absolute position
+        // first we need to find position for textarea
+        // how to find it?
+
+        // at first lets find position of text node relative to the stage:
+        var textPosition = textNode2.absolutePosition();
+
+        // then lets find position of stage container on the page:
+        var stageBox = stage.container().getBoundingClientRect();
+
+        // so position of textarea will be the sum of positions above:
+        var areaPosition = {
+          x: stageBox.left + textPosition.x,
+          y: stageBox.top + textPosition.y
+        };
+
+        
+
+        // create textarea and style it
+        var textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+
+        // apply many styles to match text on canvas as close as possible
+        // remember that text rendering on canvas and on the textarea can be different
+        // and sometimes it is hard to make it 100% the same. But we will try...
+        textarea.value = textNode2.text();
+        textarea.style.position = 'absolute';
+        textarea.style.top = areaPosition.y + 'px';
+        textarea.style.left = areaPosition.x + 'px';
+        textarea.style.width = textNode2.width() - textNode2.padding() * 2 + 'px';
+        textarea.style.height =
+          textNode2.height() - textNode2.padding() * 2 + 5 + 'px';
+        textarea.style.fontSize = textNode2.fontSize() + 'px';
+        textarea.style.border = 'none';
+        textarea.style.padding = '0px';
+        textarea.style.margin = '0px';
+        textarea.style.overflow = 'hidden';
+        textarea.style.background = 'none';
+        textarea.style.outline = 'none';
+        textarea.style.resize = 'none';
+        textarea.style.lineHeight = textNode2.lineHeight();
+        textarea.style.fontFamily = textNode2.fontFamily();
+        textarea.style.transformOrigin = 'left top';
+        textarea.style.textAlign = textNode2.align();
+        textarea.style.color = textNode2.fill();
+        rotation = textNode2.rotation();
+        var transform = '';
+        if (rotation) {
+          transform += 'rotateZ(' + rotation + 'deg)';
+        }
+
+        var px = 0;
+        // also we need to slightly move textarea on firefox
+        // because it jumps a bit
+        var isFirefox =
+          navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+        if (isFirefox) {
+          px += 2 + Math.round(textNode2.fontSize() / 20);
+        }
+        transform += 'translateY(-' + px + 'px)';
+
+        textarea.style.transform = transform;
+
+        // reset height
+        textarea.style.height = 'auto';
+        // after browsers resized it we can set actual value
+        textarea.style.height = textarea.scrollHeight + 3 + 'px';
+
+        textarea.focus();
+
+        function removeTextarea() {
+          textarea.parentNode.removeChild(textarea);
+          window.removeEventListener('click', handleOutsideClick);
+          textNode2.show();
+          tr2.hide();
+          tr2.forceUpdate();
+          layer.draw();
+        }
+
+        function setTextareaWidth(newWidth) {
+          if (!newWidth) {
+            // set width for placeholder
+            newWidth = textNode2.placeholder.length * textNode2.fontSize();
+          }
+          // some extra fixes on different browsers
+          var isSafari = /^((?!chrome|android).)*safari/i.test(
+            navigator.userAgent
+          );
+          var isFirefox =
+            navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+          if (isSafari || isFirefox) {
+            newWidth = Math.ceil(newWidth);
+          }
+
+          var isEdge =
+            document.documentMode || /Edge/.test(navigator.userAgent);
+          if (isEdge) {
+            newWidth += 1;
+          }
+          textarea.style.width = newWidth + 'px';
+        }
+
+        textarea.addEventListener('keydown', function(e) {
+          // hide on enter
+          // but don't hide on shift + enter
+          if (e.keyCode === 13 && !e.shiftKey) {
+            textNode2.text(textarea.value);
+            removeTextarea();
+          }
+          // on esc do not set value back to node
+          if (e.keyCode === 27) {
+            removeTextarea();
+          }
+        });
+
+        textarea.addEventListener('keydown', function(e) {
+          scale = textNode2.getAbsoluteScale().x;
+          setTextareaWidth(textNode2.width() * scale);
+          textarea.style.height = 'auto';
+          textarea.style.height =
+            textarea.scrollHeight + textNode2.fontSize() + 'px';
+        });
+
+        function handleOutsideClick(e) {
+          if (e.target !== textarea) {
+            textNode2.text(textarea.value);
+            removeTextarea();
+          }
+        }
+        setTimeout(() => {
+          window.addEventListener('click', handleOutsideClick);
+        });
+      });
+      
+
+            // add the layer to the stage
+      stage.add(layer);
+
+      // save stage as a json string
+      var json = stage.toJSON();
+
+      console.log(json);
+
+    </script>
+
+
+    <script type="text/javascript">
+
+       function downloadURI(uri, name) {
+        var link = document.createElement('a');
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+      }
+
+      document.getElementById('save').addEventListener(
+        'click',
+        function() {
+          var dataURL = stage.toDataURL({ pixelRatio: 1 });
+          downloadURI(dataURL, 'stage.png');
+        },
+        false
+      );
+
+       link.on('click', function(e) {
+        // if click on empty area - remove all transformers
+        if (e.target === stage) {
+          stage.find('Transformer').destroy();
+          layer.draw();
+          return;
+        }
+        // do nothing if clicked NOT on our rectangles
+        if (!e.target.hasName('rect')) {
+          return;
+        }
+        // remove old transformers
+        // TODO: we can skip it if current rect is already selected
+        stage.find('Transformer').destroy();
+
+        // create new transformer
+        var tr = new Konva.Transformer();
+        layer.add(tr);
+        tr.attachTo(e.target);
+        layer.draw();
+      });
+
+
+</script>
+<script type="text/javascript">
+  // were can we snap our objects?
+      function getLineGuideStops(skipShape) {
+        // we can snap to stage borders and the center of the stage
+        var vertical = [0, stage.width() / 2, stage.width()];
+        var horizontal = [0, stage.height() / 2, stage.height()];
+
+        // and we snap over edges and center of each object on the canvas
+        stage.find('.object').forEach(guideItem => {
+          if (guideItem === skipShape) {
+            return;
+          }
+          var box = guideItem.getClientRect();
+          // and we can snap to all edges of shapes
+          vertical.push([box.x, box.x + box.width, box.x + box.width / 2]);
+          horizontal.push([box.y, box.y + box.height, box.y + box.height / 2]);
+        });
+        return {
+          vertical: vertical.flat(),
+          horizontal: horizontal.flat()
+        };
+      }
+
+      // what points of the object will trigger to snapping?
+      // it can be just center of the object
+      // but we will enable all edges and center
+      function getObjectSnappingEdges(node) {
+        var box = node.getClientRect();
+        return {
+          vertical: [
+            {
+              guide: Math.round(box.x),
+              offset: Math.round(node.x() - box.x),
+              snap: 'start'
+            },
+            {
+              guide: Math.round(box.x + box.width / 2),
+              offset: Math.round(node.x() - box.x - box.width / 2),
+              snap: 'center'
+            },
+            {
+              guide: Math.round(box.x + box.width),
+              offset: Math.round(node.x() - box.x - box.width),
+              snap: 'end'
+            }
+          ],
+          horizontal: [
+            {
+              guide: Math.round(box.y),
+              offset: Math.round(node.y() - box.y),
+              snap: 'start'
+            },
+            {
+              guide: Math.round(box.y + box.height / 2),
+              offset: Math.round(node.y() - box.y - box.height / 2),
+              snap: 'center'
+            },
+            {
+              guide: Math.round(box.y + box.height),
+              offset: Math.round(node.y() - box.y - box.height),
+              snap: 'end'
+            }
+          ]
+        };
+      }
+
+      // find all snapping possibilities
+      function getGuides(lineGuideStops, itemBounds) {
+        var resultV = [];
+        var resultH = [];
+
+        lineGuideStops.vertical.forEach(lineGuide => {
+          itemBounds.vertical.forEach(itemBound => {
+            var diff = Math.abs(lineGuide - itemBound.guide);
+            // if the distance between guild line and object snap point is close we can consider this for snapping
+            if (diff < GUIDELINE_OFFSET) {
+              resultV.push({
+                lineGuide: lineGuide,
+                diff: diff,
+                snap: itemBound.snap,
+                offset: itemBound.offset
+              });
+            }
+          });
+        });
+
+        lineGuideStops.horizontal.forEach(lineGuide => {
+          itemBounds.horizontal.forEach(itemBound => {
+            var diff = Math.abs(lineGuide - itemBound.guide);
+            if (diff < GUIDELINE_OFFSET) {
+              resultH.push({
+                lineGuide: lineGuide,
+                diff: diff,
+                snap: itemBound.snap,
+                offset: itemBound.offset
+              });
+            }
+          });
+        });
+
+        var guides = [];
+
+        // find closest snap
+        var minV = resultV.sort((a, b) => a.diff - b.diff)[0];
+        var minH = resultH.sort((a, b) => a.diff - b.diff)[0];
+        if (minV) {
+          guides.push({
+            lineGuide: minV.lineGuide,
+            offset: minV.offset,
+            orientation: 'V',
+            snap: minV.snap
+          });
+        }
+        if (minH) {
+          guides.push({
+            lineGuide: minH.lineGuide,
+            offset: minH.offset,
+            orientation: 'H',
+            snap: minH.snap
+          });
+        }
+        return guides;
+      }
+
+      function drawGuides(guides) {
+        guides.forEach(lg => {
+          if (lg.orientation === 'H') {
+            var line = new Konva.Line({
+              points: [-6000, lg.lineGuide, 6000, lg.lineGuide],
+              stroke: 'rgb(0, 161, 255)',
+              strokeWidth: 1,
+              name: 'guid-line',
+              dash: [4, 6]
+            });
+            layer.add(line);
+            layer.batchDraw();
+          } else if (lg.orientation === 'V') {
+            var line = new Konva.Line({
+              points: [lg.lineGuide, -6000, lg.lineGuide, 6000],
+              stroke: 'rgb(0, 161, 255)',
+              strokeWidth: 1,
+              name: 'guid-line',
+              dash: [4, 6]
+            });
+            layer.add(line);
+            layer.batchDraw();
+          }
+        });
+      }
+
+      layer.on('dragmove', function(e) {
+        // clear all previous lines on the screen
+        layer.find('.guid-line').destroy();
+
+        // find possible snapping lines
+        var lineGuideStops = getLineGuideStops(e.target);
+        // find snapping points of current object
+        var itemBounds = getObjectSnappingEdges(e.target);
+
+        // now find where can we snap current object
+        var guides = getGuides(lineGuideStops, itemBounds);
+
+        // do nothing of no snapping
+        if (!guides.length) {
+          return;
+        }
+
+        drawGuides(guides);
+
+        // now force object position
+        guides.forEach(lg => {
+          switch (lg.snap) {
+            case 'start': {
+              switch (lg.orientation) {
+                case 'V': {
+                  e.target.x(lg.lineGuide + lg.offset);
+                  break;
+                }
+                case 'H': {
+                  e.target.y(lg.lineGuide + lg.offset);
+                  break;
+                }
+              }
+              break;
+            }
+            case 'center': {
+              switch (lg.orientation) {
+                case 'V': {
+                  e.target.x(lg.lineGuide + lg.offset);
+                  break;
+                }
+                case 'H': {
+                  e.target.y(lg.lineGuide + lg.offset);
+                  break;
+                }
+              }
+              break;
+            }
+            case 'end': {
+              switch (lg.orientation) {
+                case 'V': {
+                  e.target.x(lg.lineGuide + lg.offset);
+                  break;
+                }
+                case 'H': {
+                  e.target.y(lg.lineGuide + lg.offset);
+                  break;
+                }
+              }
+              break;
+            }
+          }
+        });
+      });
+
+      layer.on('dragend', function(e) {
+        // clear all previous lines on the screen
+        layer.find('.guid-line').destroy();
+        layer.batchDraw();
+      });
+
+      layer.draw();
+
+
+
+</script>
+</body>
+
+</html>

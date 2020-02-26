@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"> 
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>WOUI智能物料设计平台</title>
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+    var oHeader = document.getElementById('header-2');
+    var oDiv=document.getElementById('div1');
+	var aIpt=oDiv.getElementsByTagName('input');
+	var aDiv=oDiv.getElementsByTagName('div');
+	$(window).on('scroll', function() {
+	        scroll()
+	    });
+ 		var aA1 = oHeader.getElementsByTagName('a');
+ 		var aLi = oHeader.getElementsByTagName('li');
+ 		
+ 		for (var i = 0; i<aLi.length; i++) {
+            
+            aLi[i].index=i;
+		    aLi[i].onclick=function () {
+				for (var i = 0; i<aLi.length; i++) {
+	            aLi[i].className='';
+				}
+			    this.className='active';		  
+	};
+
+ 	};
+ 	
+
+	for (var i = 0; i<aIpt.length; i++) {
+		aIpt[i].index=i;
+		aIpt[i].onclick=function () {
+
+			for (var i = 0; i<aIpt.length; i++) {
+            aIpt[i].className='';
+            aDiv[i].style.display='none';
+			}
+		    this.className='active';
+		    aDiv[this.index].style.display='block';
+	};
+	};
+	
+}
+
+</script>
+</head>
+
+<body>
+<div id="header-2">
+	<div class="nav-left">
+		<ul>
+			<img src="img/logo2.png">
+			<li><a href="index.html">首页</a></li>
+			<li class="active"><a href="javascript:;">线上物料模板</a></li>
+			<li><a href="javascript:;">线下平面模板</a></li>
+			<li><a href="javascript:;">动画物料</a></li>
+			<li><a href="javascript:;">管理</a></li>
+		</ul>
+	</div>
+	<div class="nav-right">
+		<ul>
+			<li>你好，<span>倩倩</span></li>
+			<li>|<a class="exit" href="javascript:;">退出
+              <i class="c-icon"></i>
+			</a></li>
+		</ul>
+	</div>
+</div>
+<div id="container-2">
+	<div id="div1">
+		<span class="ipt">
+			<input class="active" type="button" value="广告投放物料" />
+			<input  type="button" value="自定义物料" />
+			<input  type="button" value="沃支付商户物料" />
+			<input  type="button" value="包嘟嘟形象物料" />
+			<input  type="button" value="品牌logo物料" />
+		</span>
+		<div style="display:block;">
+            <img src="img/box.png" onClick="window.open('detail.html')">
+
+		</div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+</div>
+<div id="footer-2">
+	<div id="copyright"></div>
+	<div id="fri-link"><img src=""></div>
+</div>
+</body>
+
+</html>
