@@ -106,7 +106,7 @@ window.onload=function(){
      
       });
 
-       var GUIDELINE_OFFSET = 3;
+       var GUIDELINE_OFFSET = 5;
       
       //创建一个层
       var layer = new Konva.Layer();
@@ -136,7 +136,6 @@ window.onload=function(){
 
 
       };
-      
       imageObj.src = 'img/iii.png'; 
 
 
@@ -187,52 +186,50 @@ window.onload=function(){
       });
 
       group1.add(rect1);
-
-
-
       stage.add(layer); //把层添加到舞台
+
+
 
       var tr = new Konva.Transformer({
         node: textNode,
-
-        keepRatio: true,
+        enabledAnchors: ['middle-left', 'middle-right'],
         // set minimum width of text
         boundBoxFunc: function(oldBox, newBox) {
           newBox.width = Math.max(30, newBox.width);
           return newBox;
         }
       });
-        
+
+      textNode.on('transform', function() {
+        // reset scale, so only with is changing by transformer
+        textNode.setAttrs({
+          width: textNode.width() * textNode.scaleX(),
+          scaleX: 1
+        });
+      });
+
+    
         var tr2 = new Konva.Transformer({
         node: textNode2,
-
-        keepRatio: true,
+        enabledAnchors: ['middle-left', 'middle-right'],
         // set minimum width of text
         boundBoxFunc: function(oldBox, newBox) {
           newBox.width = Math.max(30, newBox.width);
           return newBox;
         }
       });
-
+        textNode2.on('transform', function() {
+        // reset scale, so only with is changing by transformer
+        textNode2.setAttrs({
+          width: textNode2.width() * textNode2.scaleX(),
+          scaleX: 1
+        });
+      });
    
       layer.add(tr);
       layer.add(tr2);
 
-      textNode.on('mousedown', function() {
-        tr.show();
-      });
-      layer.draw();
-      textNode2.on('mousedown', function() {
-        tr2.show();
-      });
-      layer.draw();
-
-       stage.on('click', function() {
-        tr.hide();
-        tr2.hide();
-        tr3.hide();
-      });
-      layer.draw();
+ 
 
       var tr3 = new Konva.Transformer({
         node: rect1,
@@ -241,15 +238,36 @@ window.onload=function(){
       layer.add(tr3);
       
 
-      rect1.on('mousedown', function() {
-        tr3.show();
-      });
-      layer.draw();
-      rect1.on('mouseout', function() {
-        tr3.hide();
-      });
-      
+       /*stage.on('click mousedown', function(e) {
+        // if click on empty area - remove all transformers
+        if (e.target === stage) {
+          stage.find('Transformer').hide();
+          layer.draw();
+          return;
+        }
+        // do nothing if clicked NOT on our rectangles
+        if (!e.target.hasName('object')) {
+          return;
+        }
+        // remove old transformers
+        // TODO: we can skip it if current rect is already selected
+        stage.find('Transformer').hide();
 
+        // create new transformer
+        var tr = new Konva.Transformer();
+        layer.add(tr);
+        tr.attachTo(e.target);
+        layer.draw();
+        var tr2 = new Konva.Transformer();
+        layer.add(tr2);
+        tr2.attachTo(e.target);
+        layer.draw();
+        var tr3 = new Konva.Transformer();
+        layer.add(tr3);
+        tr3.attachTo(e.target);
+        layer.draw();
+      });
+      stage.fire('click');*/
 
       //画出所有
       layer.draw();
@@ -271,7 +289,7 @@ window.onload=function(){
       textNode.on('dblclick', () => {
         // hide text node and transformer:
         textNode.hide();
-        tr.show();
+        tr.hide();
         layer.draw();
 
         // create textarea over canvas with absolute position
@@ -289,8 +307,6 @@ window.onload=function(){
           x: stageBox.left + textPosition.x,
           y: stageBox.top + textPosition.y
         };
-
-
 
         // create textarea and style it
         var textarea = document.createElement('textarea');
@@ -348,7 +364,7 @@ window.onload=function(){
           textarea.parentNode.removeChild(textarea);
           window.removeEventListener('click', handleOutsideClick);
           textNode.show();
-          tr.hide();
+          tr.show();
           tr.forceUpdate();
           layer.draw();
         }
@@ -415,7 +431,7 @@ window.onload=function(){
       textNode2.on('dblclick', () => {
         // hide text node and transformer:
         textNode2.hide();
-        tr2.show();
+        tr2.hide();
         layer.draw();
 
         // create textarea over canvas with absolute position
@@ -433,8 +449,6 @@ window.onload=function(){
           x: stageBox.left + textPosition.x,
           y: stageBox.top + textPosition.y
         };
-
-        
 
         // create textarea and style it
         var textarea = document.createElement('textarea');
@@ -492,7 +506,7 @@ window.onload=function(){
           textarea.parentNode.removeChild(textarea);
           window.removeEventListener('click', handleOutsideClick);
           textNode2.show();
-          tr2.hide();
+          tr2.show();
           tr2.forceUpdate();
           layer.draw();
         }
@@ -579,39 +593,39 @@ window.onload=function(){
       document.getElementById('save').addEventListener(
         'click',
         function() {
+
+          stage.find('Transformer').hide();
+          layer.draw();
+          
+
+          // create new transformer
+          
           var dataURL = stage.toDataURL({ pixelRatio: 1 });
           downloadURI(dataURL, 'stage.png');
+          
         },
         false
       );
-
-       link.on('click', function(e) {
-        // if click on empty area - remove all transformers
-        if (e.target === stage) {
-          stage.find('Transformer').destroy();
-          layer.draw();
-          return;
-        }
-        // do nothing if clicked NOT on our rectangles
-        if (!e.target.hasName('rect')) {
-          return;
-        }
-        // remove old transformers
-        // TODO: we can skip it if current rect is already selected
-        stage.find('Transformer').destroy();
-
-        // create new transformer
-        var tr = new Konva.Transformer();
-        layer.add(tr);
-        tr.attachTo(e.target);
+       
+       /*stage.on('click', function() {
+        stage.find('Transformer').show();
         layer.draw();
-      });
+      });*/
+       
 
 
-</script>
-<script type="text/javascript">
-  // were can we snap our objects?
-      function getLineGuideStops(skipShape) {
+
+
+
+
+
+
+
+
+
+
+
+ function getLineGuideStops(skipShape) {
         // we can snap to stage borders and the center of the stage
         var vertical = [0, stage.width() / 2, stage.width()];
         var horizontal = [0, stage.height() / 2, stage.height()];
